@@ -1,3 +1,74 @@
+# LibreNet6
+
+## Gateway setup
+
+The *IPv6 gateway* is the client device, which acts as a connection between the
+mesh network cloud and the Internet. Usually these devices have at least a (non
+public) *IPv4* address. The following steps show how to participate in a VPN
+cloud based on `tinc` and `babeld`.
+
+This manual requires a router which runs LibreMesh 17.06 or later.
+
+### Install `babeld`
+
+LibreMesh offers a packages that configures `babeld` automatically for you,
+simply install `lime-proto-babeld`.
+
+    opkg install lime-proto-babeld
+
+Secondly you have to activate in in the LibreMesh configuration file, if not
+already set: The file `/etc/config/lime` should contain the following two lines
+to 1. enable `babeld` and 2. make it listen on the *librenet6* interface
+we're about to setup in the section below.
+
+1. To automatically configure `babeld` via LibreMesh, make sure the following
+   line is in `/etc/config/lime`. Freshly flashed devices will have this per
+   default, but if you're setting up LibreNet6 on an existing node you have to
+   add it manually.
+
+    list protocols babeld:17 
+
+2. To run `babeld` on the *librenet6* interface, add the following line in the
+*network* section of the *lime* config: 
+
+    option babeld_over_librenet6 true
+
+Once both lines are added, run `lime-config` to create all necessary
+configurations.
+
+### Install `tinc`
+
+In the official OpenWrt package repository is only the current stable version of
+`tinc` available, meaning version 1.0.x, which lacks convenience features used
+within this setup. In the LibreMesh repositories starting from 17.06 is the
+unstable `tinc` package in version 1.1.x available which has all required
+features included. To install it, run the following command:
+
+    opkg update
+    opkg install tinc
+
+### Join the network
+
+Firstly you should request an invitation at TODO@TODO describing you network.
+Once accepted you can join the network by simply running this command:
+
+    tinc join <invitation-link>
+
+Tinc will configure everything on its own without further configurations.
+
+After successfully joining the network the only step missing is to start
+`babeld` to receive routes from the *IPv6 server*.
+
+    /etc/init.d/babeld enable
+    /etc/init.d/babeld restart
+
+Try to ping an address which is only accessible over IPv6 to be sure everything
+worked as expected:
+
+    ping ipv6.ident.me
+    # or
+    ping ipv6.google.com
+
 ## Server setup
 
 This manual requires a Debian machine to run, minimal system requirements are to
