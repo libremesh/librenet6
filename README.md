@@ -1,6 +1,22 @@
 # LibreNet6
 
-## Gateway setup
+## Gateway setup (automatically)
+
+Simply install the package `lime-librenet6` and request an invitation at
+librenet6**[at]**aparcar**[dot]**org. Once you received the invitation link, run
+the following command on the device to join the Tinc mesh network:
+
+    tinc join <invitation-link>
+
+Now very that the connection actually works by pinging an IPv6 only DNS entry:
+
+    ping ipv6.ident.me
+    # or
+    ping ipv6.google.com
+
+If this works, you're all set!
+
+## Gateway setup (manual)
 
 The *IPv6 gateway* is the client device, which acts as a connection between the
 mesh network cloud and the Internet. Usually these devices have at least a (non
@@ -49,8 +65,9 @@ features included. To install it, run the following command:
 
 ### Join the network
 
-Firstly you should request an invitation at TODO@TODO describing you network.
-Once accepted you can join the network by simply running this command:
+Firstly you should request an invitation at librenet6**[at]**aparcar**[dot]**org
+describing you network.  Once accepted you can join the network by simply
+running this command:
 
     tinc join <invitation-link>
 
